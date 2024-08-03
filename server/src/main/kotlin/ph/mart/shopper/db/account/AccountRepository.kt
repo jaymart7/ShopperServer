@@ -2,8 +2,6 @@ package ph.mart.shopper.db.account
 
 import org.jetbrains.exposed.sql.and
 import ph.mart.shopper.db.suspendTransaction
-import ph.mart.shopper.model.request.AccountRequest
-import ph.mart.shopper.model.request.LoginRequest
 
 internal interface AccountRepository {
 

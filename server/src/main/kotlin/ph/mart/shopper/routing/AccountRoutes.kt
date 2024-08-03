@@ -12,11 +12,11 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
-import ph.mart.shopper.model.request.LoginRequest
-import ph.mart.shopper.model.request.AccountRequest
-import ph.mart.shopper.model.response.ApiErrorResponse
 import ph.mart.shopper.db.account.AccountRepository
-import ph.mart.shopper.model.response.toAccountResponse
+import ph.mart.shopper.db.account.AccountRequest
+import ph.mart.shopper.db.account.LoginRequest
+import ph.mart.shopper.db.account.toAccountResponse
+import ph.mart.shopper.model.response.ApiErrorResponse
 import java.util.Date
 
 internal fun Routing.accountRouting(accountRepository: AccountRepository) {
