@@ -1,4 +1,4 @@
-package ph.mart.shopper.routes
+package ph.mart.shopper.routing
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -12,15 +12,16 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
-import ph.mart.shopper.model.LoginRequest
+import ph.mart.shopper.model.request.LoginRequest
 import ph.mart.shopper.model.request.AccountRequest
-import ph.mart.shopper.model.response.ApiError
-import ph.mart.shopper.repository.AccountRepository
+import ph.mart.shopper.model.response.ApiErrorResponse
+import ph.mart.shopper.db.account.AccountRepository
+import ph.mart.shopper.model.response.toAccountResponse
 import java.util.Date
 
 internal fun Routing.accountRouting(accountRepository: AccountRepository) {
 
-    val accountNotFound = ApiError(
+    val accountNotFound = ApiErrorResponse(
         code = HttpStatusCode.NotFound.value.toString(),
         message = "Account not found"
     )
@@ -33,7 +34,7 @@ internal fun Routing.accountRouting(accountRepository: AccountRepository) {
         get("/account") {
             val principal = call.principal<JWTPrincipal>()
             val username = principal!!.payload.getClaim("username").asString()
-            val accountResponse = accountRepository.getAccount(username)
+            val accountResponse = accountRepository.getAccount(username)?.toAccountResponse()
 
             if (accountResponse != null) {
                 call.respond(HttpStatusCode.OK, accountResponse)

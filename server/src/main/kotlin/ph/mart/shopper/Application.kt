@@ -2,18 +2,20 @@ package ph.mart.shopper
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import ph.mart.shopper.plugins.configureRouting
-import ph.mart.shopper.plugins.configureSerialization
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.response.respond
-import ph.mart.shopper.model.response.ApiError
+import ph.mart.shopper.db.configureDatabases
+import ph.mart.shopper.model.response.ApiErrorResponse
+import ph.mart.shopper.routing.configureRouting
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -41,11 +43,11 @@ fun Application.main() {
                 }
             }
             challenge { defaultScheme, realm ->
-                val apiError = ApiError(
+                val apiErrorResponse = ApiErrorResponse(
                     code = HttpStatusCode.Unauthorized.value.toString(),
                     message = "Please re-login"
                 )
-                call.respond(HttpStatusCode.Unauthorized, apiError)
+                call.respond(HttpStatusCode.Unauthorized, apiErrorResponse)
             }
         }
 
@@ -56,6 +58,8 @@ fun Application.main() {
         allowHeader(HttpHeaders.ContentType)
     }
 
+    install(ContentNegotiation) { json() }
+
     configureRouting()
-    configureSerialization()
+    configureDatabases()
 }

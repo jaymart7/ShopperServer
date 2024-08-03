@@ -1,4 +1,4 @@
-package ph.mart.shopper.model
+package ph.mart.shopper.model.response
 
 import kotlinx.serialization.Serializable
 
