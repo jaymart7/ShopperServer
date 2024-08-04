@@ -13,13 +13,15 @@ import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.response.respond
-import ph.mart.shopper.db.configureDatabases
+import ph.mart.shopper.db.configureLocalDatabase
 import ph.mart.shopper.model.response.ApiErrorResponse
 import ph.mart.shopper.routing.configureRouting
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>) {
+    io.ktor.server.netty.EngineMain.main(args)
+}
 
-fun Application.main() {
+fun Application.module() {
     val secret = environment.config.property("jwt.secret").getString()
     val issuer = environment.config.property("jwt.issuer").getString()
     val audience = environment.config.property("jwt.audience").getString()
@@ -61,5 +63,6 @@ fun Application.main() {
     install(ContentNegotiation) { json() }
 
     configureRouting()
-    configureDatabases()
+//    configureRemoteDatabase()
+    configureLocalDatabase()
 }

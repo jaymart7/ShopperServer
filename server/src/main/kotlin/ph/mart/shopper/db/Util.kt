@@ -8,10 +8,19 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 suspend fun <T> suspendTransaction(block: Transaction.() -> T): T =
     newSuspendedTransaction(Dispatchers.IO, statement = block)
 
-fun configureDatabases() {
+fun configureLocalDatabase() {
     Database.connect(
         "jdbc:postgresql://localhost:5432/shopper",
         user = "postgres",
         password = "timeisgold7"
+    )
+}
+
+fun configureRemoteDatabase() {
+    Database.connect(
+//        "jdbc:postgresql://dpg-cqneck5ds78s739bjc0g-a/shopper_database", // Internal
+        "jdbc:postgresql://dpg-cqneck5ds78s739bjc0g-a.singapore-postgres.render.com/shopper_database", // External
+        user = "mart",
+        password = "RiMu06P27FZw0WW6PdRlamFZyzE7625G"
     )
 }
