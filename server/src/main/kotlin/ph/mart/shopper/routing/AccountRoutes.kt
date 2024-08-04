@@ -67,9 +67,20 @@ internal fun Routing.accountRouting(accountRepository: AccountRepository) {
         post {
             val accountRequest = call.receive<AccountRequest>()
 
-            accountRepository.addAccount(accountRequest)
-
-            call.respond(HttpStatusCode.OK, "Account Successfully created")
+            try {
+                accountRepository.addAccount(accountRequest)
+                call.respond(HttpStatusCode.OK, "Account Successfully created")
+            } catch (e: Exception) {
+                if (e.message?.contains("username_constraint") == true) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ApiErrorResponse(
+                            code = "USRNM".plus(HttpStatusCode.BadRequest.value),
+                            message = "Username already taken"
+                        )
+                    )
+                }
+            }
         }
     }
 }
