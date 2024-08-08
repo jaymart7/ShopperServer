@@ -1,5 +1,8 @@
 plugins {
     application
+    /*alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.ktor)*/
     id("org.jetbrains.kotlin.jvm") version "2.0.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
     id("io.ktor.plugin") version "3.0.0-beta-2"
@@ -15,7 +18,6 @@ repositories {
 
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
-//    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["io.ktor.development"] ?: "false"}")
 }
 
 dependencies {

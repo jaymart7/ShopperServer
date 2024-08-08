@@ -14,6 +14,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.response.respond
 import ph.mart.shopper.db.configureLocalDatabase
+import ph.mart.shopper.db.configureRemoteDatabase
 import ph.mart.shopper.model.response.ApiErrorResponse
 import ph.mart.shopper.routing.configureRouting
 
@@ -63,6 +64,6 @@ fun Application.module() {
     install(ContentNegotiation) { json() }
 
     configureRouting()
-//    configureRemoteDatabase()
-    configureLocalDatabase()
+    configureRemoteDatabase()
+//    configureLocalDatabase()
 }
