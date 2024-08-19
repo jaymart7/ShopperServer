@@ -16,19 +16,20 @@ import ph.mart.shopper.db.account.AccountRepository
 import ph.mart.shopper.db.account.AccountRequest
 import ph.mart.shopper.db.account.LoginRequest
 import ph.mart.shopper.db.account.toAccountResponse
+import ph.mart.shopper.model.JwtConfig
 import ph.mart.shopper.model.response.ApiErrorResponse
 import java.util.Date
 
-internal fun Routing.accountRouting(accountRepository: AccountRepository) {
+internal fun Routing.accountRouting(
+    accountRepository: AccountRepository,
+    jwtConfig: JwtConfig
+) {
+    val tokenExpirationInSeconds = 60
 
     val accountNotFound = ApiErrorResponse(
         code = HttpStatusCode.NotFound.value.toString(),
         message = "Account not found"
     )
-
-    val secret = environment.config.property("jwt.secret").getString()
-    val issuer = environment.config.property("jwt.issuer").getString()
-    val audience = environment.config.property("jwt.audience").getString()
 
     authenticate("auth-jwt") {
         get("/account") {
@@ -53,11 +54,11 @@ internal fun Routing.accountRouting(accountRepository: AccountRepository) {
                 call.respond(HttpStatusCode.NotFound, accountNotFound)
             } else {
                 val token = JWT.create()
-                    .withAudience(audience)
-                    .withIssuer(issuer)
+                    .withAudience(jwtConfig.audience)
+                    .withIssuer(jwtConfig.issuer)
                     .withClaim("username", loginRequest.username)
-                    .withExpiresAt(Date(System.currentTimeMillis() + 60000))
-                    .sign(Algorithm.HMAC256(secret))
+                    .withExpiresAt(Date(System.currentTimeMillis() + tokenExpirationInSeconds * 1000))
+                    .sign(Algorithm.HMAC256(jwtConfig.secret))
                 call.respond(hashMapOf("token" to token))
             }
         }

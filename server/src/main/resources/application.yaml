@@ -1,9 +1,16 @@
 ktor:
+  deployment:
+    port: 8080
+#    sslPort: 8443
   application:
     modules:
       - ph.mart.shopper.ApplicationKt.module
-  deployment:
-    port: 8080
+  security:
+    ssl:
+      keyStore: keystore.jks
+      keyAlias: sampleAlias
+      keyStorePassword: foobar
+      privateKeyPassword: foobar
 storage:
   driverClassName: "org.postgresql.Driver"
   jdbcURL: "jdbc:postgresql://localhost:5432/shopper"

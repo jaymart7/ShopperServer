@@ -8,8 +8,11 @@ import io.ktor.server.routing.routing
 import ph.mart.shopper.db.account.AccountRepositoryImpl
 import ph.mart.shopper.db.product.ProductRepositoryImpl
 import ph.mart.shopper.db.task.TaskRepositoryImpl
+import ph.mart.shopper.model.JwtConfig
 
-internal fun Application.configureRouting() {
+internal fun Application.configureRouting(
+    jwtConfig: JwtConfig,
+) {
 
     val accountRepository = AccountRepositoryImpl()
     val productRepository = ProductRepositoryImpl()
@@ -21,7 +24,10 @@ internal fun Application.configureRouting() {
                 call.respond("Hello world")
             }
         }
-        accountRouting(accountRepository)
+        accountRouting(
+            accountRepository = accountRepository,
+            jwtConfig = jwtConfig
+        )
         productRouting(productRepository)
         taskRouting(taskRepository)
     }
