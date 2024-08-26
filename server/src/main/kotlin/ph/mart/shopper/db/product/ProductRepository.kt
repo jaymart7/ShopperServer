@@ -25,6 +25,7 @@ internal class ProductRepositoryImpl : ProductRepository {
     override suspend fun addProduct(productRequest: ProductRequest): Int = suspendTransaction {
         ProductDAO.new {
             title = productRequest.title
+            dateTime = productRequest.dateTime
         }.id.value
     }
 

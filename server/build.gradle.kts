@@ -47,6 +47,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:0.41.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
     implementation("org.jetbrains.exposed:exposed-dao:0.41.1")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.41.1")
     implementation("org.postgresql:postgresql:42.5.1")
     implementation("ch.qos.logback:logback-classic:1.5.6")
 
